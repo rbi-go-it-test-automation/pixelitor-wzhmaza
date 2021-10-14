@@ -16,6 +16,7 @@ out/*
 target/*
 .idea/*
 /target/
+build
 
 # Created by https://www.toptal.com/developers/gitignore/api/windows,macos,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,linux
@@ -88,5 +89,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Gradle
+.gradle
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,linux
