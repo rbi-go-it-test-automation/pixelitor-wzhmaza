@@ -19,5 +19,7 @@ jobs:
       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
 
     - name: Build with Gradle
-      run: ./gradlew clean build --debug --stacktrace
+      uses: GabrielBB/xvfb-action@v1
+      with:
+          run: ./gradlew clean build
 
