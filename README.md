@@ -14,7 +14,8 @@ use **pixelitor.Pixelitor** as the main class.
 1. OpenJDK 16+ has to be installed, and the environment variable `JAVA_HOME` 
 must point to the OpenJDK installation directory.
 2. Execute `./gradlew clean shadowJar` in the main directory (where the `build.gradle` file is), 
-this will create an executable `.jar` in the `build/libs` sub-directory. 
+this will create an executable `-all.jar` (for example, `Pixelitor-4.3.0-all.jar`) 
+in the `build/libs` sub-directory. 
 
 ## Running Pixelitor
 
