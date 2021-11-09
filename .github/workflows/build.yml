@@ -23,3 +23,8 @@ jobs:
       with:
           run: ./gradlew clean build
 
+    - name: Zip Jacoco Report
+      uses: montudor/action-zip@v1
+      with:
+        args: zip -qq -r jacocoTestReport.xml jacocoReport
+      working-directory: build/reports/jacoco/test
