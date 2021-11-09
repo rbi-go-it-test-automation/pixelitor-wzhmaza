@@ -24,6 +24,9 @@ jobs:
           run: ./gradlew clean build
 
     - name: Upload the test coverage to Artifactory
+      shell: bash
+      env:
+        SUPER_SECRET: ${{ secrets.TEAMSCALE_API_TOKEN }}
       run: |
         GIT_HASH="$(git rev-parse "$GITHUB_SHA")"
         GIT_BRANCH="${GITHUB_REF#refs/heads/}"
@@ -33,6 +36,6 @@ jobs:
         mkdir -p $PARTITION_COVERAGE_DIR
         cp ./build/reports/jacoco/test/jacocoTestReport.xml $PARTITION_COVERAGE_DIR
         zip --recurse-paths coverage-upload.zip $PARTITION_COVERAGE_DIR
-        curl -H "X-JFrog-Art-Api:${{ secrets.TEAMSCALE_API_TOKEN }}" \
+        curl -H "X-JFrog-Art-Api:$SUPER_SECRET" \
             -T "coverage-upload.zip" \
             "https://wzhmaza.jfrog.io/artifactory/wzhmaza-pixelitor-generic-local/coverage/${GIT_BRANCH}/${GIT_TIMESTAMP_UNIX}-${GIT_HASH}/"
