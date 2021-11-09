@@ -1,13 +1,6 @@
-name: Java CI 
+runs-on: ubuntu-latest
 
-on: [push]
-
-jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
+steps:
     - uses: actions/checkout@v2
 
     - name: Set up JDK 16
@@ -21,12 +14,7 @@ jobs:
     - name: Build with Gradle
       uses: GabrielBB/xvfb-action@v1
       with:
-          run: ./gradlew clean build
+          run: ./gradlew clean build test
 
     - name: Install zip
       uses: montudor/action-zip@v1
-
-    - name: Zip output Jacoco Report
-      run: zip -qq -r jacocoTestReport.xml
-      working-directory: build/reports/jacoco/test
-      
