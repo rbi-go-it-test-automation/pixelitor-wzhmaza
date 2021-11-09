@@ -1,6 +1,13 @@
-runs-on: ubuntu-latest
+name: Java CI 
 
-steps:
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
     - uses: actions/checkout@v2
 
     - name: Set up JDK 16
@@ -14,7 +21,18 @@ steps:
     - name: Build with Gradle
       uses: GabrielBB/xvfb-action@v1
       with:
-          run: ./gradlew clean build test
+          run: ./gradlew clean build
 
-    - name: Install zip
-      uses: montudor/action-zip@v1
+    - name: Upload the test coverage to Artifactory
+      run: |
+        GIT_HASH="$(git rev-parse "$GITHUB_SHA")"
+        GIT_BRANCH="${GITHUB_REF#refs/heads/}"
+        GIT_TIMESTAMP="${{ github.event.head_commit.timestamp }}"
+        GIT_TIMESTAMP_UNIX="`date -d $GIT_TIMESTAMP +"%s"`000"
+        PARTITION_COVERAGE_DIR="unit-tests"
+        mkdir -p $PARTITION_COVERAGE_DIR
+        cp ./build/reports/jacoco/test/jacocoTestReport.xml $PARTITION_COVERAGE_DIR
+        zip --recurse-paths coverage-upload.zip $PARTITION_COVERAGE_DIR
+        curl -H "X-JFrog-Art-Api:${{ secrets.TEAMSCALE_API_TOKEN }}" \
+            -T "coverage-upload.zip" \
+            "https://wzhmaza.jfrog.io/artifactory/wzhmaza-pixelitor-generic-local/coverage/${GIT_BRANCH}/${GIT_TIMESTAMP_UNIX}-${GIT_HASH}/"
